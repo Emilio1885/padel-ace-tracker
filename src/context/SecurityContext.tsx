@@ -161,13 +161,13 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Login function with improved error handling
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<{ error: AuthError | null }> => {
     // Validate inputs first
     const emailValidation = validateEmail(email);
     if (!emailValidation.valid) {
       return { 
         error: { 
-          type: 'email', 
+          type: 'email' as const, 
           message: emailValidation.message || "Email inválido"
         } 
       };
@@ -236,13 +236,13 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Registration function with robust validation
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = async (email: string, password: string, name: string): Promise<{ error: AuthError | null }> => {
     // Validate all inputs first
     const emailValidation = validateEmail(email);
     if (!emailValidation.valid) {
       return { 
         error: { 
-          type: 'email', 
+          type: 'email' as const, 
           message: emailValidation.message || "Email inválido"
         } 
       };
@@ -252,7 +252,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!passwordValidation.valid) {
       return { 
         error: { 
-          type: 'password', 
+          type: 'password' as const, 
           message: passwordValidation.message || "Contraseña inválida"
         } 
       };
@@ -262,7 +262,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!nameValidation.valid) {
       return { 
         error: { 
-          type: 'general', 
+          type: 'general' as const, 
           message: nameValidation.message || "Nombre inválido"
         } 
       };
@@ -340,7 +340,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { 
         error: { 
-          type: 'server', 
+          type: 'server' as const, 
           message: "Error del servidor", 
           details: err.message 
         } 
@@ -356,11 +356,11 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Update user profile
-  const updateProfile = async (updates: any) => {
+  const updateProfile = async (updates: any): Promise<{ error: AuthError | null; data: any | null }> => {
     if (!user) {
       return { 
         error: { 
-          type: 'session', 
+          type: 'session' as const, 
           message: "No hay sesión activa" 
         },
         data: null
@@ -383,7 +383,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
         
         return { 
           error: { 
-            type: 'server', 
+            type: 'server' as const, 
             message: "Error al actualizar perfil", 
             details: error.message 
           },
@@ -409,7 +409,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { 
         error: { 
-          type: 'server', 
+          type: 'server' as const, 
           message: "Error del servidor", 
           details: err.message 
         },
