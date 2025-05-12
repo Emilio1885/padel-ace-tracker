@@ -3,16 +3,22 @@ import React from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { SkillData } from '@/utils/demoData';
+import { Skill } from '@/hooks/useSkillsData';
+import EditSkillsForm from './EditSkillsForm';
+import { useAuth } from '@/context/AuthContext';
 
 interface SkillsRadarProps {
-  data: SkillData[];
+  data: Skill[] | SkillData[];
 }
 
 const SkillsRadar: React.FC<SkillsRadarProps> = ({ data }) => {
+  const { user } = useAuth();
+  
   return (
     <Card className="border-0 shadow-sm">
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <h3 className="text-lg font-semibold">Habilidades</h3>
+        {user && <EditSkillsForm />}
       </CardHeader>
       <CardContent>
         <div className="h-64">

@@ -8,14 +8,50 @@ import SkillsRadar from '@/components/SkillsRadar';
 import StatCard from '@/components/StatCard';
 import { demoPlayer, demoMatches, demoPerformance, demoSkills } from '@/utils/demoData';
 import { Award, Calendar, ChartLine, Trophy } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 const Index: React.FC = () => {
+  const { user } = useAuth();
+  
+  // Redirect to dashboard if already logged in
+  if (user) {
+    return <Navigate to="/" />;
+  }
+  
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <nav className="bg-white shadow-sm border-b border-gray-200">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-padel-blue to-padel-green rounded-lg"></div>
+            <h1 className="text-xl font-bold text-gray-900">PadelTracker</h1>
+          </div>
+          
+          <div>
+            <Link to="/login">
+              <Button>Iniciar Sesión</Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
       
       <main className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-6">Panel de seguimiento</h1>
+        <div className="max-w-3xl mx-auto text-center mb-10">
+          <h1 className="text-3xl font-bold mb-4">Seguimiento de crecimiento para jugadores de pádel</h1>
+          <p className="text-xl text-gray-700 mb-6">
+            Registra tus partidos, monitorea tu progreso y mejora tu juego con PadelTracker
+          </p>
+          <div className="flex justify-center gap-4">
+            <Link to="/login">
+              <Button size="lg" className="font-semibold">Comenzar ahora</Button>
+            </Link>
+          </div>
+        </div>
+        
+        <h1 className="text-2xl font-bold mb-6">Panel de seguimiento (Demo)</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div className="lg:col-span-3">
@@ -61,7 +97,20 @@ const Index: React.FC = () => {
         <div className="mb-6">
           <MatchHistory matches={demoMatches} />
         </div>
+        
+        <div className="text-center mt-10 mb-6">
+          <h2 className="text-2xl font-bold mb-4">¿Listo para mejorar tu juego?</h2>
+          <Link to="/login">
+            <Button size="lg" className="font-semibold">Registrarse gratis</Button>
+          </Link>
+        </div>
       </main>
+      
+      <footer className="bg-gray-100 py-6">
+        <div className="container mx-auto px-4 text-center text-gray-600">
+          <p>© 2025 PadelTracker - Seguimiento de jugadores de pádel</p>
+        </div>
+      </footer>
     </div>
   );
 };

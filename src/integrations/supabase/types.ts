@@ -9,7 +9,138 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      matches: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          location: string
+          opponent: string
+          result: string
+          score: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          id?: string
+          location: string
+          opponent: string
+          result: string
+          score: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          location?: string
+          opponent?: string
+          result?: string
+          score?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      performance: {
+        Row: {
+          created_at: string
+          id: string
+          losses: number
+          month: string
+          user_id: string
+          wins: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          losses?: number
+          month: string
+          user_id: string
+          wins?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          losses?: number
+          month?: string
+          user_id?: string
+          wins?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "performance_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          image: string | null
+          level: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          image?: string | null
+          level?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image?: string | null
+          level?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          user_id: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skills_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
