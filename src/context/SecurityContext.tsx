@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +20,7 @@ interface SecurityContextType {
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, name: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
+  signInWithProvider: (provider: 'github' | 'google') => Promise<{ error: AuthError | null }>;
   updateProfile: (updates: any) => Promise<{ error: AuthError | null; data: any | null }>;
   refreshSession: () => Promise<void>;
   validatePassword: (password: string) => { valid: boolean; message?: string };
@@ -348,6 +348,54 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Social login function for GitHub and Google
+  const signInWithProvider = async (provider: 'github' | 'google'): Promise<{ error: AuthError | null }> => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: window.location.origin,
+        },
+      });
+
+      if (error) {
+        let errorMessage = `Error al iniciar sesión con ${provider}`;
+        let errorType: AuthError['type'] = 'general';
+
+        toast({
+          variant: "destructive",
+          title: `Error de inicio de sesión con ${provider}`,
+          description: errorMessage,
+        });
+
+        return { 
+          error: { 
+            type: errorType as const, 
+            message: errorMessage, 
+            details: error.message, 
+            code: error.code 
+          } 
+        };
+      }
+
+      return { error: null };
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Error del servidor",
+        description: "Hubo un problema al conectarse al servidor",
+      });
+
+      return { 
+        error: { 
+          type: 'server' as const, 
+          message: "Error del servidor", 
+          details: err.message 
+        } 
+      };
+    }
+  };
+
   // Logout with proper cleanup
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -441,6 +489,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
         signIn,
         signUp,
         signOut,
+        signInWithProvider,
         updateProfile,
         refreshSession,
         validatePassword,
