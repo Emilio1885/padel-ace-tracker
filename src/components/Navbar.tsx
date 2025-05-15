@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ChartLineIcon, UserIcon, LogOut } from "@/components/Icons";
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { Link } from 'react-router-dom';
 import AddMatchForm from './AddMatchForm';
 import {
@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar: React.FC = () => {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut } = useSecurity();
   
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
