@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -167,7 +168,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!emailValidation.valid) {
       return { 
         error: { 
-          type: 'email' as const, 
+          type: 'email', 
           message: emailValidation.message || "Email inválido"
         } 
       };
@@ -242,7 +243,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!emailValidation.valid) {
       return { 
         error: { 
-          type: 'email' as const, 
+          type: 'email', 
           message: emailValidation.message || "Email inválido"
         } 
       };
@@ -252,7 +253,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!passwordValidation.valid) {
       return { 
         error: { 
-          type: 'password' as const, 
+          type: 'password', 
           message: passwordValidation.message || "Contraseña inválida"
         } 
       };
@@ -262,7 +263,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!nameValidation.valid) {
       return { 
         error: { 
-          type: 'general' as const, 
+          type: 'general', 
           message: nameValidation.message || "Nombre inválido"
         } 
       };
@@ -340,7 +341,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { 
         error: { 
-          type: 'server' as const, 
+          type: 'server', 
           message: "Error del servidor", 
           details: err.message 
         } 
@@ -359,8 +360,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) {
-        let errorMessage = `Error al iniciar sesión con ${provider}`;
-        let errorType: AuthError['type'] = 'general';
+        const errorMessage = `Error al iniciar sesión con ${provider}`;
+        const errorType: AuthError['type'] = 'general';
 
         toast({
           variant: "destructive",
@@ -370,7 +371,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
         return { 
           error: { 
-            type: errorType as const, 
+            type: errorType, 
             message: errorMessage, 
             details: error.message, 
             code: error.code 
@@ -388,7 +389,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { 
         error: { 
-          type: 'server' as const, 
+          type: 'server', 
           message: "Error del servidor", 
           details: err.message 
         } 
@@ -408,7 +409,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (!user) {
       return { 
         error: { 
-          type: 'session' as const, 
+          type: 'session', 
           message: "No hay sesión activa" 
         },
         data: null
@@ -431,7 +432,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
         
         return { 
           error: { 
-            type: 'server' as const, 
+            type: 'server', 
             message: "Error al actualizar perfil", 
             details: error.message 
           },
@@ -457,7 +458,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { 
         error: { 
-          type: 'server' as const, 
+          type: 'server', 
           message: "Error del servidor", 
           details: err.message 
         },
