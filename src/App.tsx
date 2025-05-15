@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import { AuthProvider } from "./context/AuthContext";
 import { SecurityProvider } from "./context/SecurityContext";
 import Index from "./pages/Index";
 
@@ -28,15 +27,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <SecurityProvider>
-          <AuthProvider>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/intro" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthProvider>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/intro" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </SecurityProvider>
       </BrowserRouter>
     </TooltipProvider>

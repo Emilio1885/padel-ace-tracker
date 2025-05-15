@@ -6,7 +6,7 @@ import MatchHistory from '@/components/MatchHistory';
 import PerformanceChart from '@/components/PerformanceChart';
 import SkillsRadar from '@/components/SkillsRadar';
 import StatCard from '@/components/StatCard';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { useMatchData } from '@/hooks/useMatchData';
 import { usePerformanceData } from '@/hooks/usePerformanceData';
 import { useSkillsData } from '@/hooks/useSkillsData';
@@ -14,7 +14,7 @@ import { Award, Calendar, ChartLine, Trophy } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
-  const { user, profile } = useAuth();
+  const { user, profile } = useSecurity();
   const { matches, matchStats } = useMatchData();
   const { performanceData } = usePerformanceData();
   const { skillsData } = useSkillsData();

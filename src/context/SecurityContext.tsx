@@ -69,9 +69,12 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
   // Initialize session
   useEffect(() => {
+    console.log("Setting up auth listener in SecurityContext");
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
+        console.log("Auth state change event:", event);
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
 
@@ -92,6 +95,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log("Initial session check:", currentSession ? "Session exists" : "No session");
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
 
@@ -161,8 +165,10 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     return { valid: true };
   };
 
-  // Login function with improved error handling
+  // Login function with improved error handling and debugging
   const signIn = async (email: string, password: string): Promise<{ error: AuthError | null }> => {
+    console.log("Attempting to sign in with:", email);
+    
     // Validate inputs first
     const emailValidation = validateEmail(email);
     if (!emailValidation.valid) {
@@ -175,17 +181,22 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
+      // Log the sign-in attempt
+      console.log("Calling Supabase signInWithPassword");
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
+        console.error("Supabase login error:", error.message, error.code);
+        
         let errorMessage = "Error al iniciar sesión";
         let errorType: AuthError['type'] = 'general';
 
         // Determine more specific error messages
-        if (error.message.includes("Invalid login")) {
+        if (error.message.includes("Invalid login") || error.message.includes("invalid")) {
           errorMessage = "Correo o contraseña incorrectos";
           errorType = 'password';
         } else if (error.message.includes("Email not confirmed")) {
@@ -212,6 +223,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
         };
       }
 
+      console.log("Login successful:", data.user?.id);
+      
       // Success - update profile
       if (data.user) {
         const profileData = await fetchProfile(data.user.id);
@@ -220,6 +233,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { error: null };
     } catch (err: any) {
+      console.error("Unexpected error during login:", err);
+      
       toast({
         variant: "destructive",
         title: "Error del servidor",
@@ -238,6 +253,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
   // Registration function with robust validation
   const signUp = async (email: string, password: string, name: string): Promise<{ error: AuthError | null }> => {
+    console.log("Attempting to sign up with:", email);
+    
     // Validate all inputs first
     const emailValidation = validateEmail(email);
     if (!emailValidation.valid) {
@@ -270,6 +287,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
+      console.log("Calling Supabase signUp");
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -281,6 +300,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) {
+        console.error("Supabase signup error:", error.message, error.code);
+        
         let errorMessage = "Error al registrarse";
         let errorType: AuthError['type'] = 'general';
 
@@ -309,20 +330,29 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
         };
       }
 
+      console.log("Signup successful, creating profile for:", data.user?.id);
+      
       // Create user profile after successful registration
       if (data.user) {
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .insert([
-            {
-              id: data.user.id,
-              name: name,
-              level: 1.0,
-            },
-          ]);
+        try {
+          console.log("Creating profile in database");
+          const { error: profileError } = await supabase
+            .from("profiles")
+            .insert([
+              {
+                id: data.user.id,
+                name: name,
+                level: 1.0,
+              },
+            ]);
 
-        if (profileError) {
-          console.error("Error creating profile:", profileError);
+          if (profileError) {
+            console.error("Error creating profile:", profileError);
+          } else {
+            console.log("Profile created successfully");
+          }
+        } catch (profileErr) {
+          console.error("Exception when creating profile:", profileErr);
         }
       }
 
@@ -333,6 +363,8 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
 
       return { error: null };
     } catch (err: any) {
+      console.error("Unexpected error during signup:", err);
+      
       toast({
         variant: "destructive",
         title: "Error del servidor",
