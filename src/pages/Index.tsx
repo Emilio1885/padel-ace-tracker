@@ -10,11 +10,11 @@ import { demoPlayer, demoMatches, demoPerformance, demoSkills } from '@/utils/de
 import { Award, Calendar, ChartLine, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { Navigate } from 'react-router-dom';
 
 const Index: React.FC = () => {
-  const { user } = useAuth();
+  const { user } = useSecurity();
   
   // Redirect to dashboard if already logged in
   if (user) {

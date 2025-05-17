@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { useToast } from '@/hooks/use-toast';
 import { usePerformanceData } from '@/hooks/usePerformanceData';
 
@@ -18,7 +18,7 @@ const AddMatchForm = () => {
   const [result, setResult] = useState<'win' | 'loss'>('win');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const { user } = useAuth();
+  const { user } = useSecurity();
   const { toast } = useToast();
   const { updatePerformanceData } = usePerformanceData();
 

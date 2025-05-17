@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Session, User } from "@supabase/supabase-js";
-import { SecurityContextType } from "@/types/auth";
+import { SecurityContextType, AuthError } from "@/types/auth";
 import { validateEmail, validatePassword, validateName } from "@/utils/authValidation";
 import { useAuthOperations } from "@/hooks/useAuthOperations";
 
@@ -91,7 +91,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Wrap the authUpdateProfile function to update local state
-  const updateProfile = async (updates: any) => {
+  const updateProfile = async (updates: any): Promise<{ error: AuthError | null; data: any | null }> => {
     if (!user) {
       return { 
         error: { 
