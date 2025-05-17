@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { useSecurity } from '@/context/SecurityContext';
 import { supabase } from '@/integrations/supabase/client';
+import { Tables } from '@/integrations/supabase/types';
 
 export type Skill = Tables<'skills'> & {
   fullMark?: number;

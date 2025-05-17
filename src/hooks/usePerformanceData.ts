@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { useSecurity } from '@/context/SecurityContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Tables } from '@/integrations/supabase/types';
 
 export type PerformanceData = Tables<'performance'>;
 

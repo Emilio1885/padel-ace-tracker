@@ -5,14 +5,14 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { SkillData } from '@/utils/demoData';
 import { Skill } from '@/hooks/useSkillsData';
 import EditSkillsForm from './EditSkillsForm';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 
 interface SkillsRadarProps {
   data: Skill[] | SkillData[];
 }
 
 const SkillsRadar: React.FC<SkillsRadarProps> = ({ data }) => {
-  const { user } = useAuth();
+  const { user } = useSecurity();
   
   return (
     <Card className="border-0 shadow-sm">
