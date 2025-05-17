@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Tables } from '@/integrations/supabase/types';
 
 export type Skill = Tables<'skills'> & {
   fullMark?: number;
@@ -19,7 +17,7 @@ type SkillsDataState = {
 };
 
 export function useSkillsData() {
-  const { user } = useAuth();
+  const { user } = useSecurity();
   const [skillsData, setSkillsData] = useState<SkillsDataState>({
     skills: [],
     bestSkill: { name: '', value: 0 },

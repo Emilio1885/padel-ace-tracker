@@ -1,13 +1,12 @@
-
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Tables } from '@/integrations/supabase/types';
+import { useToast } from '@/hooks/use-toast';
 
 export type PerformanceData = Tables<'performance'>;
 
 export function usePerformanceData() {
-  const { user } = useAuth();
+  const { user } = useSecurity();
   const [performanceData, setPerformanceData] = useState<{month: string, wins: number, losses: number}[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);

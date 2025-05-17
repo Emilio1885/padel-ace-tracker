@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useSecurity } from '@/context/SecurityContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Match } from '@/types/match';
 
@@ -17,7 +17,7 @@ interface MatchStats {
 }
 
 export function useMatchData() {
-  const { user } = useAuth();
+  const { user } = useSecurity();
   const [matches, setMatches] = useState<Match[]>([]);
   const [matchStats, setMatchStats] = useState<MatchStats>({
     total: 0,
