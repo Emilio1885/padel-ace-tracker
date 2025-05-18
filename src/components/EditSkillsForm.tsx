@@ -4,9 +4,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { useSkillsData } from '@/hooks/useSkillsData';
 import { useToast } from '@/hooks/use-toast';
 import { Pencil } from 'lucide-react';
+import { demoSkills } from '@/utils/demoData';
 
 const DEFAULT_SKILLS = [
   { name: 'Forehand', value: 50 },
@@ -18,7 +18,6 @@ const DEFAULT_SKILLS = [
 ];
 
 const EditSkillsForm = () => {
-  const { skillsData, updateSkill } = useSkillsData();
   const [isOpen, setIsOpen] = useState(false);
   const [skills, setSkills] = useState<{name: string, value: number}[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,10 +25,11 @@ const EditSkillsForm = () => {
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
-      // Initialize with existing skills or defaults
-      const initialSkills = skillsData.skills.length > 0 
-        ? skillsData.skills.map(skill => ({ name: skill.name, value: skill.value }))
-        : DEFAULT_SKILLS;
+      // Initialize with demo skills
+      const initialSkills = demoSkills.map(skill => ({ 
+        name: skill.name, 
+        value: skill.value 
+      }));
       
       setSkills(initialSkills);
     }
@@ -46,24 +46,22 @@ const EditSkillsForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Update each skill
-      for (const skill of skills) {
-        await updateSkill(skill.name, skill.value);
-      }
-      
-      toast({
-        title: "Habilidades actualizadas",
-        description: "Tus habilidades han sido actualizadas exitosamente.",
-      });
-      
-      setIsOpen(false);
+      // Simulating success with demo data
+      setTimeout(() => {
+        toast({
+          title: "Habilidades actualizadas",
+          description: "Tus habilidades han sido actualizadas exitosamente.",
+        });
+        
+        setIsOpen(false);
+        setIsSubmitting(false);
+      }, 500);
     } catch (error: any) {
       toast({
         title: "Error",
         description: "No se pudieron actualizar las habilidades.",
         variant: "destructive"
       });
-    } finally {
       setIsSubmitting(false);
     }
   };

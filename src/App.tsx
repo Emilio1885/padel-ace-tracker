@@ -5,9 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import { SecurityProvider } from "./context/SecurityContext";
 import Index from "./pages/Index";
 
 // Create a client
@@ -26,15 +24,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <SecurityProvider>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/intro" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </SecurityProvider>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/intro" element={<Index />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

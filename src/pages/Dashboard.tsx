@@ -6,22 +6,35 @@ import MatchHistory from '@/components/MatchHistory';
 import PerformanceChart from '@/components/PerformanceChart';
 import SkillsRadar from '@/components/SkillsRadar';
 import StatCard from '@/components/StatCard';
-import { useSecurity } from '@/context/SecurityContext';
-import { useMatchData } from '@/hooks/useMatchData';
-import { usePerformanceData } from '@/hooks/usePerformanceData';
-import { useSkillsData } from '@/hooks/useSkillsData';
+import { demoPlayer, demoMatches, demoPerformance, demoSkills } from '@/utils/demoData';
 import { Award, Calendar, ChartLine, Trophy } from 'lucide-react';
-import { Navigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
-  const { user, profile } = useSecurity();
-  const { matches, matchStats } = useMatchData();
-  const { performanceData } = usePerformanceData();
-  const { skillsData } = useSkillsData();
-
-  if (!user || !profile) {
-    return <Navigate to="/login" />;
-  }
+  // Use demo data instead of authenticated data
+  const player = demoPlayer;
+  const matches = demoMatches;
+  const performanceData = demoPerformance;
+  const skillsData = {
+    skills: demoSkills,
+    bestSkill: {
+      name: "Forehand",
+      value: 85
+    },
+    improvement: 12,
+    improvementVsPrevious: 4
+  };
+  
+  const matchStats = {
+    total: 24,
+    wins: 16,
+    losses: 8,
+    streak: 3,
+    streakTrend: 'up' as const,
+    streakTrendValue: '+1 victoria',
+    thisMonth: 6,
+    trend: 'up' as const,
+    trendValue: '+2'
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -32,19 +45,7 @@ const Dashboard: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div className="lg:col-span-3">
-            {profile && (
-              <PlayerProfile 
-                player={{
-                  id: profile.id,
-                  name: profile.name,
-                  image: profile.image || 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=200&auto=format&fit=crop',
-                  level: profile.level,
-                  matches: matchStats.total,
-                  wins: matchStats.wins,
-                  losses: matchStats.losses
-                }} 
-              />
-            )}
+            <PlayerProfile player={player} />
           </div>
         </div>
         
@@ -65,13 +66,13 @@ const Dashboard: React.FC = () => {
           />
           <StatCard 
             title="Mejor habilidad" 
-            value={skillsData.bestSkill.name || "N/A"} 
-            subtitle={`${skillsData.bestSkill.value || 0}/100 puntos`}
+            value={skillsData.bestSkill.name} 
+            subtitle={`${skillsData.bestSkill.value}/100 puntos`}
             icon={<Award className="w-5 h-5" />}
           />
           <StatCard 
             title="Mejora mensual" 
-            value={`${skillsData.improvement || 0}%`} 
+            value={`${skillsData.improvement}%`}
             trend={skillsData.improvement > 0 ? "up" : "neutral"}
             trendValue={`${skillsData.improvementVsPrevious > 0 ? '+' : ''}${skillsData.improvementVsPrevious}% vs. mes anterior`}
             icon={<ChartLine className="w-5 h-5" />}
@@ -80,7 +81,7 @@ const Dashboard: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <PerformanceChart data={performanceData} />
-          <SkillsRadar data={skillsData.skills} />
+          <SkillsRadar data={demoSkills} />
         </div>
         
         <div className="mb-6">

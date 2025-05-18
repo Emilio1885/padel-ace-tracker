@@ -5,20 +5,19 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { SkillData } from '@/utils/demoData';
 import { Skill } from '@/hooks/useSkillsData';
 import EditSkillsForm from './EditSkillsForm';
-import { useSecurity } from '@/context/SecurityContext';
 
 interface SkillsRadarProps {
   data: Skill[] | SkillData[];
 }
 
 const SkillsRadar: React.FC<SkillsRadarProps> = ({ data }) => {
-  const { user } = useSecurity();
+  // Removed user authentication check
   
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <h3 className="text-lg font-semibold">Habilidades</h3>
-        {user && <EditSkillsForm />}
+        <EditSkillsForm />
       </CardHeader>
       <CardContent>
         <div className="h-64">
