@@ -3,21 +3,32 @@ import React from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { SkillData } from '@/utils/demoData';
-import { Skill } from '@/hooks/useSkillsData';
-import EditSkillsForm from './EditSkillsForm';
+import { Skill } from '@/types/assessment';
+import { Button } from './ui/button';
+import { Plus } from 'lucide-react';
 
 interface SkillsRadarProps {
   data: Skill[] | SkillData[];
+  onNewAssessment?: () => void;
+  showAddButton?: boolean;
 }
 
-const SkillsRadar: React.FC<SkillsRadarProps> = ({ data }) => {
-  // Removed user authentication check
+const SkillsRadar: React.FC<SkillsRadarProps> = ({ 
+  data, 
+  onNewAssessment,
+  showAddButton = false
+}) => {
   
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <h3 className="text-lg font-semibold">Habilidades</h3>
-        <EditSkillsForm />
+        {showAddButton && (
+          <Button onClick={onNewAssessment} size="sm" variant="outline" className="flex items-center gap-1">
+            <Plus className="w-4 h-4" />
+            Nueva evaluación
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         <div className="h-64">
